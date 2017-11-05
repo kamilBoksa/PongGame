@@ -12,7 +12,6 @@ class Board:
         pygame.display.set_caption("PONG GAME")
 
     def draw(self, *args):
-        black = (0, 0, 0)
         background = pygame.image.load('field.png')
         self.surface.blit(background, (0,0))
         for drawable in args:

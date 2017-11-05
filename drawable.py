@@ -61,13 +61,23 @@ class Racket(Drawable):
         self.max_speed = max_speed
         self.surface.fill(color)
 
-    def move(self):
+    def move_player_one(self):
         keys = pygame.key.get_pressed()  # checking pressed keys
 
         if keys[pygame.K_UP]:
             if self.rect.y > 15:
                 self.rect.y -= 5
         if keys[pygame.K_DOWN]:
+            if self.rect.y < 505:
+                self.rect.y += 5
+
+    def move_player_two(self):
+        keys = pygame.key.get_pressed()  # checking pressed keys
+
+        if keys[pygame.K_w]:
+            if self.rect.y > 15:
+                self.rect.y -= 5
+        if keys[pygame.K_s]:
             if self.rect.y < 505:
                 self.rect.y += 5
 
@@ -81,8 +91,6 @@ class Racket(Drawable):
         if self.rect.y == 520:
             print(self.rect.y)
             self.rect.y -= 10
-
-
 
 
 class Ai(object):

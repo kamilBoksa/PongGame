@@ -1,9 +1,7 @@
 import pygame
 
-pygame.init()
 
-
-class Button():
+class Button:
     def __init__(self, screen, text, x, y, width, height, active_color, inactive_color, action=None):
         self.screen = screen
         self.text = text
@@ -32,7 +30,7 @@ class Button():
         return text_surface, text_surface.get_rect()
 
 
-class GameMenu():
+class GameMenu:
     def __init__(self, screen, bg_color=(0, 0, 0)):
         self.screen = screen
         self.scr_width = self.screen.get_rect().width
@@ -64,18 +62,19 @@ class GameMenu():
             if 250 + 150 > mouse[0] > 250 and 150 + 30 > mouse[1] > 150:
                 self.button_1.draw_active_button()
                 if click[0] == 1:
-                    print("ODPALAMY SINGLA")
+                    return("Single Player")
             else:
                  self.button_1.draw_inactive_button()
             if 250 + 150 > mouse[0] > 250 and 190 + 30 > mouse[1] > 190:
                 self.button_2.draw_active_button()
                 if click[0] == 1:
-                    print("ODPALAMY MULTI")
+                    return("Multi Player")
             else:
                 self.button_2.draw_inactive_button()
             if 250 + 150 > mouse[0] > 250 and 230 + 30 > mouse[1] > 230:
                 self.button_3.draw_active_button()
                 if click[0] == 1:
+                    pygame.quit()
                     quit()
             else:
                 self.button_3.draw_inactive_button()
@@ -85,11 +84,3 @@ class GameMenu():
             self.button_3.show_button_text("freesansbold.ttf", 16)
 
             pygame.display.flip()
-
-
-if __name__ == "__main__":
-    # Creating the screen
-    screen = pygame.display.set_mode((640, 480), 0, 32)
-    pygame.display.set_caption('Game Menu')
-    gm = GameMenu(screen)
-    gm.run()

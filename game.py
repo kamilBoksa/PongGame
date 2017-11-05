@@ -1,6 +1,6 @@
-import pygame
 from board import *
 from drawable import *
+from menu import *
 
 
 class Judge(object):
@@ -34,8 +34,8 @@ class Judge(object):
         self.update_score(width)
 
         height = self.board.surface.get_height()
-        self.draw_text(surface, "Player: {}".format(self.score[0]), width/2, height * 0.3)
-        self.draw_text(surface, "Computer: {}".format(self.score[1]), width/2, height * 0.7)
+        self.draw_text(surface, "Player I: {}".format(self.score[0]), width/2, height * 0.3)
+        self.draw_text(surface, "Player II: {}".format(self.score[1]), width/2, height * 0.7)
 
 
 class PongGame():
@@ -43,6 +43,7 @@ class PongGame():
     def __init__(self, width, height):
         pygame.init()
         self.board = Board(width, height)
+        self.menu = GameMenu(self.board.surface)
         self.fps_clock = pygame.time.Clock()
         self.ball = Ball(20, 20, width/2, height/2)
         self.player1 = Racket(width=20, height=80, x=80, y=height/10)
@@ -54,18 +55,36 @@ class PongGame():
         """
         Main game loop
         """
-        while True:
-            self.handle_quit()
-            self.ball.move(self.board, self.player1, self.player2)
-            self.board.draw(
-                self.ball,
-                self.player1,
-                self.player2,
-                self.judge
-            )
-            self.ai.move()
-            self.player1.move()
-            self.fps_clock.tick(30)
+        game_mode = self.menu.run()
+        if game_mode == "Single Player":
+            while True:
+
+                self.handle_quit()
+                self.ball.move(self.board, self.player1, self.player2)
+                self.board.draw(
+                    self.ball,
+                    self.player1,
+                    self.player2,
+                    self.judge
+                )
+                self.ai.move()
+                self.player1.move_player_one()
+                self.fps_clock.tick(30)
+        elif game_mode == "Multi Player":
+            while True:
+
+                self.handle_quit()
+                self.ball.move(self.board, self.player1, self.player2)
+                self.board.draw(
+                    self.ball,
+                    self.player1,
+                    self.player2,
+                    self.judge
+                )
+                self.player1.move_player_one()
+                self.player2.move_player_two()
+                self.fps_clock.tick(30)
+
 
     @staticmethod
     def handle_quit():
