@@ -38,9 +38,9 @@ class GameMenu:
 
         self.bg_color = bg_color
         self.clock = pygame.time.Clock()
-        self.button_1 = Button(self.screen, "Single PLayer", 250, 150, 150, 30, (0, 0, 255), (0, 0, 230))
-        self.button_2 = Button(self.screen, "Multi PLayer", 250, 190, 150, 30, (0, 0, 255), (0, 0, 230))
-        self.button_3 = Button(self.screen, "Quit", 250, 230, 150, 30, (255, 0, 0), (230, 0, 0))
+        self.button_1 = Button(self.screen, "Single PLayer", 300, 150, 150, 30, (0, 0, 255), (0, 0, 230))
+        self.button_2 = Button(self.screen, "Multi PLayer", 300, 190, 150, 30, (0, 0, 255), (0, 0, 230))
+        self.button_3 = Button(self.screen, "Quit", 300, 230, 150, 30, (255, 0, 0), (230, 0, 0))
 
     def run(self):
         mainloop = True
@@ -59,19 +59,19 @@ class GameMenu:
             self.screen.fill(self.bg_color)
 
             # Showing buttons
-            if 250 + 150 > mouse[0] > 250 and 150 + 30 > mouse[1] > 150:
+            if 300 + 150 > mouse[0] > 300 and 150 + 30 > mouse[1] > 150:
                 self.button_1.draw_active_button()
                 if click[0] == 1:
                     return("Single Player")
             else:
                  self.button_1.draw_inactive_button()
-            if 250 + 150 > mouse[0] > 250 and 190 + 30 > mouse[1] > 190:
+            if 300 + 150 > mouse[0] > 300 and 190 + 30 > mouse[1] > 190:
                 self.button_2.draw_active_button()
                 if click[0] == 1:
                     return("Multi Player")
             else:
                 self.button_2.draw_inactive_button()
-            if 250 + 150 > mouse[0] > 250 and 230 + 30 > mouse[1] > 230:
+            if 300 + 150 > mouse[0] > 300 and 230 + 30 > mouse[1] > 230:
                 self.button_3.draw_active_button()
                 if click[0] == 1:
                     pygame.quit()
