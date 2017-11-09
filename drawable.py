@@ -1,5 +1,4 @@
 import pygame
-from pygame.locals import *
 
 
 class Drawable:
@@ -32,15 +31,14 @@ class Ball(Drawable):
         self.x_speed *= -1
 
     def reset(self):
-        self.rect.move(self.start_x, self.start_y)
-        self.bounce_y()
+        self.rect.x = self.start_x
+        self.rect.y = self.start_y
+        self.x_speed = 5
+        self.y_speed = 5
 
     def move(self, board, *args):
         self.rect.x += self.x_speed
         self.rect.y += self.y_speed
-
-        if self.rect.x <= 0 or self.rect.x >= board.surface.get_width():
-            self.bounce_x()
 
         if self.rect.y <= 15 or self.rect.y >= board.surface.get_height() - 30:
             self.bounce_y()
@@ -48,10 +46,10 @@ class Ball(Drawable):
         for racket in args:
             if self.rect.colliderect(racket.rect):
                 self.bounce_x()
-                if 12 > self.x_speed > 0:
-                    self.x_speed += 0.2
-                elif -12 < self.x_speed < 0:
-                    self.x_speed -= 0.2
+                if 15 > self.x_speed > 0:
+                    self.x_speed += 0.3
+                elif -15 < self.x_speed < 0:
+                    self.x_speed -= 0.3
 
 
 class Racket(Drawable):
@@ -64,16 +62,6 @@ class Racket(Drawable):
     def move_player_one(self):
         keys = pygame.key.get_pressed()  # checking pressed keys
 
-        if keys[pygame.K_UP]:
-            if self.rect.y > 15:
-                self.rect.y -= 5
-        if keys[pygame.K_DOWN]:
-            if self.rect.y < 505:
-                self.rect.y += 5
-
-    def move_player_two(self):
-        keys = pygame.key.get_pressed()  # checking pressed keys
-
         if keys[pygame.K_w]:
             if self.rect.y > 15:
                 self.rect.y -= 5
@@ -81,16 +69,27 @@ class Racket(Drawable):
             if self.rect.y < 505:
                 self.rect.y += 5
 
+    def move_player_two(self):
+        keys = pygame.key.get_pressed()  # checking pressed keys
+
+        if keys[pygame.K_UP]:
+            if self.rect.y > 15:
+                self.rect.y -= 5
+        if keys[pygame.K_DOWN]:
+            if self.rect.y < 505:
+                self.rect.y += 5
+
     def ai_move(self, y):
-        delta = y - self.rect.y
-        if abs(delta) > self.max_speed:
-            delta = self.max_speed if delta > 0 else -self.max_speed
-        if 520 > self.rect.y > 15:
-            self.rect.y += delta
-            print(self.rect.y)
-        if self.rect.y == 520:
-            print(self.rect.y)
-            self.rect.y -= 10
+
+        if 505 >= self.rect.y >= 15:
+            if self.rect.centery < y:
+                self.rect.centery += 7 * 0.9
+            if self.rect.centery > y:
+                self.rect.centery -= 7 * 0.9
+        if self.rect.y > 505:
+            self.rect.y = 505
+        if self.rect.y < 15:
+            self.rect.y = 15
 
 
 class Ai(object):

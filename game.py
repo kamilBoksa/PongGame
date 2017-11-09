@@ -1,6 +1,9 @@
 from board import *
 from drawable import *
 from menu import *
+from pygame import *
+import time
+
 
 
 class Judge(object):
@@ -9,7 +12,7 @@ class Judge(object):
         self.ball = ball
         self.board = board
         self.rackets = args
-        self.score = [0, 0]
+        self.score = [9, 9]
 
         pygame.font.init()
         font_path = pygame.font.match_font('arial')
@@ -37,6 +40,10 @@ class Judge(object):
         self.draw_text(surface, "Player I: {}".format(self.score[0]), width/2, height * 0.3)
         self.draw_text(surface, "Player II: {}".format(self.score[1]), width/2, height * 0.7)
 
+        if self.score[0] == 10:  # player 1 win
+            self.draw_text(surface, "Player I is WINNER", width/2, height/2)
+        elif self.score[1] == 10:
+            self.draw_text(surface, "Player II is WINNER", width/2, height/2)
 
 class PongGame():
 
@@ -69,6 +76,11 @@ class PongGame():
                 )
                 self.ai.move()
                 self.player1.move_player_one()
+
+                if self.judge.score[0] == 10 or self.judge.score[1] == 10:
+                    time.sleep(1)
+                    pygame.quit()
+
                 self.fps_clock.tick(30)
         elif game_mode == "Multi Player":
             while True:
