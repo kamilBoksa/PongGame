@@ -13,6 +13,7 @@ class Judge(object):
         self.board = board
         self.rackets = args
         self.score = [0, 0]
+        self.score_fx = pygame.mixer.Sound('score.wav')
 
         pygame.font.init()
         font_path = pygame.font.match_font('arial')
@@ -20,9 +21,11 @@ class Judge(object):
 
     def update_score(self, board_width):
         if self.ball.rect.x < 0:
+            self.score_fx.play()
             self.score[1] += 1
             self.ball.reset()
         elif self.ball.rect.x > board_width:
+            self.score_fx.play()
             self.score[0] += 1
             self.ball.reset()
 
@@ -49,6 +52,7 @@ class PongGame():
 
     def __init__(self, width, height):
         pygame.init()
+        mixer.init()
         self.board = Board(width, height)
         self.menu = GameMenu(self.board.surface)
         self.fps_clock = pygame.time.Clock()

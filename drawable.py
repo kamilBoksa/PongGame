@@ -1,4 +1,5 @@
 import pygame
+import random
 
 
 class Drawable:
@@ -16,13 +17,15 @@ class Drawable:
 
 class Ball(Drawable):
 
-    def __init__(self, width, height, x, y, color=(255, 255, 255), x_speed=5, y_speed=5):
+    def __init__(self, width, height, x, y, color=(255, 255, 255)):
         super(Ball, self).__init__(width, height, x, y, color)
         pygame.draw.ellipse(self.surface, self.color, [0, 0, self.width, self.height])
-        self.x_speed = x_speed
-        self.y_speed = y_speed
+        directions = (-5, 5)
+        self.x_speed = random.choice(directions)
+        self.y_speed = random.choice(directions)
         self.start_x = x
         self.start_y = y
+        self.bounce_fx = pygame.mixer.Sound('bounce.wav')
 
     def bounce_y(self):
         self.y_speed *= -1
@@ -31,20 +34,23 @@ class Ball(Drawable):
         self.x_speed *= -1
 
     def reset(self):
+        directions = (-5, 5)
         self.rect.x = self.start_x
         self.rect.y = self.start_y
-        self.x_speed = 5
-        self.y_speed = 5
+        self.x_speed = random.choice(directions)
+        self.y_speed = random.choice(directions)
 
     def move(self, board, *args):
         self.rect.x += self.x_speed
         self.rect.y += self.y_speed
 
         if self.rect.y <= 15 or self.rect.y >= board.surface.get_height() - 30:
+            self.bounce_fx.play()
             self.bounce_y()
 
         for racket in args:
             if self.rect.colliderect(racket.rect):
+                self.bounce_fx.play()
                 self.bounce_x()
                 if 15 > self.x_speed > 0:
                     self.x_speed += 0.3
@@ -56,6 +62,8 @@ class Racket(Drawable):
 
     def __init__(self, width, height, x, y, color=(255, 255, 255), max_speed=10):
         super(Racket, self).__init__(width, height, x, y, color)
+        self.x = x
+        self.y = y
         self.max_speed = max_speed
         self.surface.fill(color)
 
@@ -80,7 +88,6 @@ class Racket(Drawable):
                 self.rect.y += 5
 
     def ai_move(self, y):
-
         if 505 >= self.rect.y >= 15:
             if self.rect.centery < y:
                 self.rect.centery += 6 * 0.8
