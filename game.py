@@ -12,7 +12,7 @@ class Judge(object):
         self.ball = ball
         self.board = board
         self.rackets = args
-        self.score = [9, 9]
+        self.score = [0, 0]
 
         pygame.font.init()
         font_path = pygame.font.match_font('arial')

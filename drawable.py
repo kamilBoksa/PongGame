@@ -83,9 +83,9 @@ class Racket(Drawable):
 
         if 505 >= self.rect.y >= 15:
             if self.rect.centery < y:
-                self.rect.centery += 7 * 0.9
+                self.rect.centery += 6 * 0.8
             if self.rect.centery > y:
-                self.rect.centery -= 7 * 0.9
+                self.rect.centery -= 6 * 0.8
         if self.rect.y > 505:
             self.rect.y = 505
         if self.rect.y < 15:
