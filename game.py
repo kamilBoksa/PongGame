@@ -83,7 +83,7 @@ class PongGame():
 
                 if self.judge.score[0] == 10 or self.judge.score[1] == 10:
                     time.sleep(1)
-                    pygame.quit()
+                    self.run()
 
                 self.fps_clock.tick(30)
         elif game_mode == "Multi Player":
@@ -100,6 +100,10 @@ class PongGame():
                 self.player1.move_player_one()
                 self.player2.move_player_two()
                 self.fps_clock.tick(30)
+        elif game_mode == "Controls":
+            while True:
+                self.handle_quit()
+                self.menu.controls_screen()
 
 
     @staticmethod
@@ -107,6 +111,7 @@ class PongGame():
         for event in pygame.event.get():
             if event.type == pygame.locals.QUIT:
                 pygame.quit()
+                quit()
 
 
 if __name__ == "__main__":
