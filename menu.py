@@ -43,6 +43,7 @@ class GameMenu:
         self.button_2 = Button(self.screen, "Multi PLayer", 300, 190, 150, 30, (0, 0, 255), (0, 0, 230))
         self.button_3 = Button(self.screen, "Controls", 300, 230, 150, 30, (0, 0, 255), (0, 0, 230))
         self.button_4 = Button(self.screen, "Quit", 300, 270, 150, 30, (255, 0, 0), (230, 0, 0))
+        self.button_back = Button(self.screen, "Back", 300, 300, 150, 30, (0, 0, 255), (0, 0, 230))
 
     def controls_screen(self):
         text = """
@@ -57,7 +58,8 @@ class GameMenu:
                 ESC - back to menu
                 
                 Game ends when one of the players reach 10 score."""
-
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
         font = pygame.font.Font("freesansbold.ttf", 16)
         lines = text.split('\n')
         self.screen.fill(self.bg_color)
@@ -68,6 +70,13 @@ class GameMenu:
             text_rect = text_surface.get_rect(center=(350, (20 + separation)))
             self.screen.blit(text_surface, text_rect)
             separation += 20
+
+        self.button_back.draw_inactive_button()
+        if 300 + 150 > mouse[0] > 300 and 300 + 30 > mouse[1] > 300:
+            self.button_back.draw_active_button()
+            if click[0] == 1:
+                return "Back"
+        self.button_back.show_button_text("freesansbold.ttf", 16)
         pygame.display.flip()
 
     def run(self):
@@ -99,13 +108,13 @@ class GameMenu:
                     return "Multi Player"
             else:
                 self.button_2.draw_inactive_button()
-            if 300 + 150 > mouse[0] > 300 and 230 + 30 > mouse[1] > 190:
+            if 300 + 150 > mouse[0] > 300 and 230 + 30 > mouse[1] > 230:
                 self.button_3.draw_active_button()
                 if click[0] == 1:
                     return "Controls"
             else:
                 self.button_3.draw_inactive_button()
-            if 300 + 150 > mouse[0] > 300 and 270 + 30 > mouse[1] > 230:
+            if 300 + 150 > mouse[0] > 300 and 270 + 30 > mouse[1] > 270:
                 self.button_4.draw_active_button()
                 if click[0] == 1:
                     pygame.quit()

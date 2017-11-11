@@ -5,7 +5,6 @@ from pygame import *
 import time
 
 
-
 class Judge(object):
 
     def __init__(self, board, ball, *args):
@@ -29,6 +28,9 @@ class Judge(object):
             self.score[0] += 1
             self.ball.reset()
 
+    def reset_score(self):
+        self.score = [0, 0]
+
     def draw_text(self, surface,  text, x, y):
         text = self.font.render(text, True, (150, 150, 150))
         rect = text.get_rect()
@@ -44,9 +46,10 @@ class Judge(object):
         self.draw_text(surface, "Player II: {}".format(self.score[1]), width/2, height * 0.7)
 
         if self.score[0] == 10:  # player 1 win
-            self.draw_text(surface, "Player I is WINNER", width/2, height/2)
+            self.draw_text(surface, "Player I WINS", width/2, height/2)
         elif self.score[1] == 10:
-            self.draw_text(surface, "Player II is WINNER", width/2, height/2)
+            self.draw_text(surface, "Player II WINS", width/2, height/2)
+
 
 class PongGame():
 
@@ -67,9 +70,9 @@ class PongGame():
         Main game loop
         """
         game_mode = self.menu.run()
+        self.judge.reset_score()
         if game_mode == "Single Player":
             while True:
-
                 self.handle_quit()
                 self.ball.move(self.board, self.player1, self.player2)
                 self.board.draw(
@@ -88,7 +91,6 @@ class PongGame():
                 self.fps_clock.tick(30)
         elif game_mode == "Multi Player":
             while True:
-
                 self.handle_quit()
                 self.ball.move(self.board, self.player1, self.player2)
                 self.board.draw(
@@ -99,19 +101,27 @@ class PongGame():
                 )
                 self.player1.move_player_one()
                 self.player2.move_player_two()
+
+                if self.judge.score[0] == 10 or self.judge.score[1] == 10:
+                    time.sleep(1)
+                    self.run()
+
                 self.fps_clock.tick(30)
         elif game_mode == "Controls":
             while True:
                 self.handle_quit()
-                self.menu.controls_screen()
+                move_back = self.menu.controls_screen()
+                if move_back == "Back":
+                    self.run()
 
-
-    @staticmethod
-    def handle_quit():
+    def handle_quit(self):
         for event in pygame.event.get():
             if event.type == pygame.locals.QUIT:
                 pygame.quit()
                 quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.run()
 
 
 if __name__ == "__main__":
